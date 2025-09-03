@@ -3,6 +3,7 @@ const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 
 // 🔑 Railway DB Config using Environment Variables
