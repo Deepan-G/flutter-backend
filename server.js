@@ -5,19 +5,19 @@ const bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.json());
 
-// 🔑 Railway DB Config
+// 🔑 Railway DB Config using Environment Variables
 const db = mysql.createConnection({
-  host: "mysql.railway.internal",
-  port: 3306,
-  user: "root",
-  password: "ZJdiISweXqxuhPdAfcALnlaUYiijgwQA",
-  database: "railway"
+  host: process.env.MYSQLHOST,
+  port: process.env.MYSQLPORT,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE
 });
 
 // DB connect
 db.connect(err => {
   if (err) {
-    console.error("DB connection failed: " + err.stack);
+    console.error("❌ DB connection failed: " + err.stack);
     return;
   }
   console.log("✅ Connected to Railway MySQL!");
@@ -40,6 +40,8 @@ app.get("/getText", (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log("🚀 Server running on http://localhost:3000");
+// Dynamic Port from Railway
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`🚀 Server running on port ${port}`);
 });
